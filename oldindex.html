@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- we will read accelerometer and gryo data -->
+    <body>
+    <button onclick="requestMotion()">Start</button>
+    <p id ="output"></p>
+    <p id = "accel_data"></p>
+    <p id = "gyro_data"></p>
+    <p id = "mag_data"></p>
+    <p id = "temp_data"></p>
+    <p id = "time_data"></p>
+    </body>
+    <script>
+        //read sensors using deviceorientation event
+        function sendData(event) {
+            alrt("sending data");
+            console.log(event);
+            document.getElementById("output").innerHTML = event.toString();
+            document.getElementById("accel_data").innerHTML = "Accelerometer: " + event.accelerationIncludingGravity.x + ", " + event.accelerationIncludingGravity.y + ", " + event.accelerationIncludingGravity.z;
+            document.getElementById("gyro_data").innerHTML = "Gyroscope: " + event.rotationRate.alpha + ", " + event.rotationRate.beta + ", " + event.rotationRate.gamma;
+            document.getElementById("mag_data").innerHTML = "Magnetometer: " + event.magneticField.x + ", " + event.magneticField.y + ", " + event.magneticField.z;
+            document.getElementById("temp_data").innerHTML = "Temperature: " + event.magneticField.x + ", " + event.magneticField.y + ", " + event.magneticField.z;
+            document.getElementById("time_data").innerHTML = "Time: " + event.timeStamp;
+
+            //send 
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "https://192.168.0.2:8000/sensors", true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify(event));
+        }
+
+        function requestMotion() {
+            alert("Requesting motion data");
+            if (window.DeviceOrientationEvent) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "https://192.168.0.2:8000/sensorsok", true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(JSON.stringify('Starting'));
+                window.addEventListener('deviceorientation', sendData, false);
+            } else {
+                xhttp.open("POST", "https://192.168.0.2:8000/sensorsbad", true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(JSON.stringify('Failed'));
+
+                alert('Device Motion is not supported in this browser.');
+            }
+        }
+
+    </script>
+</html>

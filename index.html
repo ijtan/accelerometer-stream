@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MMM.. Motion</title>
+<!-- inlude motion.js from static files -->
+
+</head>
+<body>
+  <div id="nodeviceorientation" style="display: none">
+    <button id="requestaccess">Request Permission (iOS 13 only)</button> <br />
+    iOS 12: Please Enable device orientation in Settings > Safari > Motion &
+    Orientation Access.<br />
+    <button id="opensettings">Go to Settings</button><br />
+    <a href="googlechromes://YOUR_URL">Open in Chrome</a> or
+    <a href="itms-apps://itunes.apple.com/us/app/chrome/id535886823"
+      >Install Chrome</a
+    >
+  </div>
+  <div id="deviceorientation" style="display: none">
+    Motion & Orientation Access OK!<br /><br />
+    <div id="deviceorientationdata"></div>
+  </div>
+</body>
+<script src="static/motion.js"></script>
