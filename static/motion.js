@@ -47,17 +47,48 @@ function updateDeviceOrientationData(e) {
   const data_str = JSON.stringify(data);
 
   ws.send(data_str);
-  continue_send = false;
+  // continue_send = false;
 
   // wait for reply from servee
-  ws.onmessage = (event) => {
-    console.log(event.data);
-    continue_send = true;
-  };
+  // ws.onmessage = (event) => {
+  //   console.log(event.data);
+  //   continue_send = true;
+  // };
   
 };
 
+async function updateDeviceMotion(e){
+  if(!continue_send) return;
+  // only send every 5th data point
+
+  const dataText = `x: ${e.acceleration.x} <br>
+    y: ${e.acceleration.y} <br>
+    z: ${e.acceleration.z} <br>`;
+  document.getElementById("devicemotiondata").innerHTML = dataText;
+
+  //jsonify it
+  const data = {
+    x: e.acceleration.x,
+    y: e.acceleration.y,
+    z: e.acceleration.z,
+  };
+
+  const data_str = JSON.stringify(data);
+
+  ws.send(data_str);
+  // continue_send = false;
+
+  // wait for reply from servee
+  // ws.onmessage = (event) => {
+  //   console.log(event.data);
+  //   continue_send = true;
+  // };
+  
+}
+
 window.addEventListener("deviceorientation", updateDeviceOrientationData);
+// window.addEventListener("devicemotion", updateDeviceMotion);
+
 
 const showNoDeviceOrientationMessage = () => {
   document.getElementById("nodeviceorientation").style.display = "block";
